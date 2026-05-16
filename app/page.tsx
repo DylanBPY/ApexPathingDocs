@@ -13,7 +13,7 @@ export default function Home() {
           Apex Pathing
         </h1>
         <p className="text-xl text-accent-text mb-9 leading-relaxed">
-          The Apex pathing slogan goes here I guess
+          Path your way to the top
         </p>
 
         <div className="flex flex-wrap justify-center gap-4 mb-20">
