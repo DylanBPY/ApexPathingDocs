@@ -26,7 +26,7 @@ export default function Home() {
           Path your way to the peaks!
         </p>
 
-        <div className="w-64 max-w-sm h-[1px] bg-[#cc0000]/40 mb-8 rounded-full"></div>
+        <div className="w-80 max-w-md h-[1px] bg-[#cc0000]/40 mb-5 rounded-full"></div>
 
         <div className="flex flex-wrap justify-center gap-4">
           <a
@@ -40,7 +40,7 @@ export default function Home() {
             href="https://github.com/ApexPathing/"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-8 py-3 rounded-full bg-brand-accent text-foreground font-semibold hover:bg-brand-accent-hover transition-all border border-red-900"
+            className="px-8 py-3 rounded-full bg-brand-accent text-white font-semibold hover:bg-brand-accent-hover transition-all border border-red-900"
           >
             GitHub
           </a>
