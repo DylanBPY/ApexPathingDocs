@@ -7,7 +7,7 @@ import { BackgroundBeams } from "@/components/background-beams";
 
 export default function Home() {
   return (
-    <div className="flex flex-col w-full items-center justify-start min-h-[100vh] pt-16 px-6 text-center relative overflow-hidden">
+    <div className="flex flex-col w-full items-center justify-center min-h-[calc(100vh-var(--nextra-navbar-height,4rem)-8rem)] py-12 px-6 text-center relative overflow-hidden">
       <div className="max-w-3xl z-10 relative flex flex-col items-center">
         <Image
           src={logo_icon}
@@ -26,9 +26,9 @@ export default function Home() {
           Path your way to the peaks!
         </p>
 
-        <div className="w-64 max-w-sm h-[1px] bg-[#cc0000]/40 mb-6 rounded-full"></div>
+        <div className="w-64 max-w-sm h-[1px] bg-[#cc0000]/40 mb-8 rounded-full"></div>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
+        <div className="flex flex-wrap justify-center gap-4">
           <a
             href="/docs/about"
             className="px-8 py-3 rounded-full bg-brand-primary text-white font-semibold hover:bg-brand-primary-hover transition-all"
@@ -47,8 +47,9 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <BackgroundBeams />
       </div>
+    </div>
   )
 }
