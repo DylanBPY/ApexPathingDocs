@@ -7,18 +7,18 @@ import { BackgroundBeams } from "@/components/background-beams";
 
 export default function Home() {
   return (
-    <div className="flex flex-col w-full items-center justify-center h-[calc(100vh-var(--nextra-navbar-height,4rem)-8rem)] px-6 text-center relative overflow-hidden">
+    <div className="flex flex-col w-full items-center justify-start min-h-[100vh] pt-16 px-6 text-center relative overflow-hidden">
       <div className="max-w-3xl z-10 relative flex flex-col items-center">
         <Image
           src={logo_icon}
           alt="Apex Pathing Logo"
           width={280}
           height={280}
-          className="w-56 h-56 sm:w-72 sm:h-72 mb-1 mx-auto"
+          className="w-56 h-56 sm:w-72 sm:h-72 mb-2 mx-auto"
           priority
         />
 
-        <h1 className="text-4xl sm:text-5xl tracking-tight font-bold mb-1 text-foreground">
+        <h1 className="text-4xl sm:text-5xl tracking-tight font-bold mb-4 text-foreground">
           Apex Pathing
         </h1>
 
@@ -26,10 +26,9 @@ export default function Home() {
           Path your way to the peaks!
         </p>
 
-        {/* Subtle red line */}
-        <div className="w-24 h-[1px] bg-[#cc0000]/40 mb-4 rounded-full"></div>
+        <div className="w-64 max-w-sm h-[1px] bg-[#cc0000]/40 mb-6 rounded-full"></div>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-0">
+        <div className="flex flex-wrap justify-center gap-4 mb-16">
           <a
             href="/docs/about"
             className="px-8 py-3 rounded-full bg-brand-primary text-white font-semibold hover:bg-brand-primary-hover transition-all"
@@ -47,7 +46,16 @@ export default function Home() {
           </a>
         </div>
       </div>
-      <BackgroundBeams />
+
+      <div className="absolute inset-0 z-0">
+        <BackgroundBeams />
+      </div>
+
+      <footer className="w-full z-10 mt-auto pb-8 pt-4 border-t border-[#1a0000]/10 text-xs text-foreground/70">
+        <p>
+          © 2026 Apex Pathing. Apex Pathing is licensed under the GNU General Public License v3.0. The Apex Pathing name and logo are trademarks of Apex Pathing.
+        </p>
+      </footer>
     </div>
   )
 }
