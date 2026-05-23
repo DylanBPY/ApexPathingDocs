@@ -7,26 +7,29 @@ import { BackgroundBeams } from "@/components/background-beams";
 
 export default function Home() {
   return (
-    <div className="flex flex-col w-full items-center justify-center pt-2 px-6 text-center relative">
+    <div className="flex flex-col w-full items-center justify-center h-[calc(100vh-var(--nextra-navbar-height,4rem)-8rem)] px-6 text-center relative overflow-hidden">
       <div className="max-w-3xl z-10 relative flex flex-col items-center">
         <Image
           src={logo_icon}
           alt="Apex Pathing Logo"
-          width={320}
-          height={320}
-          className="w-64 h-64 sm:w-80 sm:h-80 mb-2 mx-auto"
+          width={280}
+          height={280}
+          className="w-56 h-56 sm:w-72 sm:h-72 mb-1 mx-auto"
           priority
         />
 
-        <h1 className="text-4xl sm:text-5xl tracking-tight font-bold mb-2 text-foreground">
+        <h1 className="text-4xl sm:text-5xl tracking-tight font-bold mb-1 text-foreground">
           Apex Pathing
         </h1>
 
-        <p className="text-base sm:text-lg mb-6 leading-relaxed font-semibold tracking-wide text-[#cc0000]">
+        <p className="text-base sm:text-lg mb-2 leading-relaxed font-semibold tracking-wide text-[#cc0000]">
           Path your way to the peaks!
         </p>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-4">
+        {/* Subtle red line */}
+        <div className="w-24 h-[1px] bg-[#cc0000]/40 mb-4 rounded-full"></div>
+
+        <div className="flex flex-wrap justify-center gap-4 mb-0">
           <a
             href="/docs/about"
             className="px-8 py-3 rounded-full bg-brand-primary text-white font-semibold hover:bg-brand-primary-hover transition-all"
