@@ -10,6 +10,8 @@ This controller contains 3 terms:
 * **Proportional**: Multiplied by the current positional error in inches. This term is responsible for the majority of the robot's movement.
 * **Derivative**: Multiplied by the change in error since the last update. Helps to reduce oscillation.
 * **Static**: A constant power added to the output that helps the robot to break through static friction.
+Apex Pathing uses PDS controllers to be as precise and accurate as possible with path following.
+
 
 ## Tuning a PDS controller
 Typically when tuning a PDS controller, it's good advice to begin with the static term. Make sure that the P and D terms are both set to 0.
@@ -24,5 +26,4 @@ However, it can also cause extreme oscilation or a slow response time if it's to
 
 
 ## What role do PDS controllers play in Apex Pathing?
-Apex Pathing uses PDS controllers to be as precise and accurate as possible with path following.
 
