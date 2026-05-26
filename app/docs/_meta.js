@@ -13,5 +13,5 @@ export default {
         type: "separator",
         title: "Core Concepts"
     },
-    "controllers": "Controllers",
+    "misc": "Controllers",
 }

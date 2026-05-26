@@ -17,7 +17,7 @@ function PageBanner() {
   return (
     <Banner storageKey="some-key">
       Apex Pathing is currently not released! Join the
-      &nbsp;<a href="https://discord.gg/qpP4CXaHDg" target="_blank" rel="noopener noreferrer">Discord</a>&nbsp;
+      &nbsp;<a href="https://discord.gg/qpP4CXaHDg"target="_blank" rel="noopener noreferrer"><u>Discord Server</u></a>&nbsp;
       to help or keep up with development.
     </Banner>
   )

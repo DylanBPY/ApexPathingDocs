@@ -40,7 +40,11 @@ tiny oscilations and allow the robot to coompletely stop.
   for the purposes of testing.
 </Callout>
 
-## Tuning Process
+## Tuning Process -- Mecanum and Tank Drive
 Before anything else, the heading controller should be tuned to ensure that the robot can maintain its heading while 
 tuning the lateral and axial controllers. The heading tuner should be run first, followed by the lateral and axial
 tuners in any order.
+
+## Tuning Process -- Swerve Drive
+The swerve module angle offsets should be debugged prior to running any of the tuners or the tuning won't do anything.
+After that, run the standard three tuners.

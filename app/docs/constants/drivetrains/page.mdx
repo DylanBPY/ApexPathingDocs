@@ -61,6 +61,7 @@ The swerve drivetrain takes multiple arguments in the constants file:
 * analog encoder names
 * trackwidth and wheelbase measurements
 * maximum power
+* angular offsets for each module
 It's structured slightly differently by declaring stuff per module.
 ```java
 public DrivetrainConstants setDrivetrainConstants() { // Any DrivetrainConstants
@@ -75,6 +76,8 @@ public DrivetrainConstants setDrivetrainConstants() { // Any DrivetrainConstants
                         .setEncoderName("flEncoder")
                         //motor direction
                         .setMotorReversed(false)
+                        //.setOffset angle
+                        .setModuleAngleOffset(0) //degrees
         )
         .setFrontRightModuleConstants(
                 new SwerveModuleConstants()
@@ -86,6 +89,8 @@ public DrivetrainConstants setDrivetrainConstants() { // Any DrivetrainConstants
                         .setEncoderName("frEncoder")
                         //motor direction
                         .setMotorReversed(true)
+                        //.setOffset angle
+                        .setModuleAngleOffset(0) //degrees
         )
         .setBackLeftModuleConstants(
                 new SwerveModuleConstants()
@@ -97,6 +102,8 @@ public DrivetrainConstants setDrivetrainConstants() { // Any DrivetrainConstants
                         .setEncoderName("blEncoder")
                         //motor direction
                         .setMotorReversed(false)
+                        //.setOffset angle
+                        .setModuleAngleOffset(0) //degrees
         )
         .setBackRightModuleConstants(
                 new SwerveModuleConstants()
@@ -108,6 +115,8 @@ public DrivetrainConstants setDrivetrainConstants() { // Any DrivetrainConstants
                         .setEncoderName("brEncoder")
                         //motor direction
                         .setMotorReversed(true)
+                        //.setOffset angle
+                        .setModuleAngleOffset(0) //degrees
         )
         //max power threshold
         .setMaxPower(1.0)

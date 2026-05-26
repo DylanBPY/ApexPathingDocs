@@ -1,9 +1,9 @@
-# PDFL Controller
+# PDFL Controller or PDL
 ---
 
 ## What are PDFL controllers good for?
 PDFL controllers are designed to be more precise and accurate than a traditional PID controller. The feedforward term helps to account for 
-friction in the robot.
+friction in the robot. In a pathing library they can grant extreme accuracy to a robot.
 
 ## Overview
 A PDFL controller is a controller concept developed by FTC Wolfpack Machina (18438).
@@ -28,4 +28,5 @@ Lastly, you can add some lower limit to increase the accuracy of the controller.
 ## What role do PDFL controllers play in Apex Pathing?
 Apex Pathing uses a variant of PDFL controllers, called a PDL controller, which removes the feedforward term. We have plans to support other types in the future. Our library uses three PDFL controllers for path following (at least on a mecanum drive):
 one for the translation direction of the robot, one for the strafing direction, and one for the heading of the robot.
+
 
