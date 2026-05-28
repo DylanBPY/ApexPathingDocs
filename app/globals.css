@@ -15,6 +15,7 @@
   --color-brand-accent: #292929;
   --color-brand-accent-hover: #333333;
   --color-brand-glow: #000000;
+  --color-brand-bold: #a91c1c;
 }
 
 @theme inline {
@@ -37,6 +38,7 @@
     --color-brand-accent: #292929;
     --color-brand-accent-hover: #333333;
     --color-brand-glow: #000000;
+    --color-brand-bold: #cc2121;
 }
 
 body {
@@ -234,4 +236,9 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   letter-spacing: -0.04em !important;
+}
+
+strong, b {
+  color: var(--color-brand-bold) !important;
+  font-weight: 700;
 }
