@@ -6,12 +6,11 @@ import Snowfall from "react-snowfall";
 export default function SnowEffect() {
   return (
     <Snowfall
-      // Fixes the overlay to cover the full screen viewport
       style={{
         position: "fixed",
         width: "100vw",
         height: "100vh",
-        zIndex: 10, // Keeps snow on top of your background
+        zIndex: -1, // Pushes the snow behind your page content
       }}
       // Optional configuration props to tweak the appearance
       snowflakeCount={100} // Total number of snowflakes
