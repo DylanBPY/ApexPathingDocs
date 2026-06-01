@@ -3,7 +3,7 @@
 
 ## Cubic Functions
 
-* At its core, B-Splines are cubic functions, a function with a degree of 3.
+* At its core, BSplines are cubic functions, a function with a degree of 3.
 For example, a simple linear equation: $f(x)= mx+b$ has a degree of 1, 
 because the highest power in the equation, is 1. 
 * A quadratic: $f(x)= Ax^2+Bx+C$ has a degree of 2.
@@ -36,32 +36,32 @@ and 2 on the $y$ function.
 because now, there is only one output for each input. Then, just plug the functions back into $(f(t),g(t))$.
 * To gain a more in-depth understanding of this concept, we recommend watching this [YouTube video](https://www.youtube.com/watch?v=JwN43QAlF50&t=109s).
 
-## B-Spline Features
+## BSpline Features
 
-B-Splines possess multiple advantageous properties making them a perfect fit for FTC pathing!
+BSplines possess multiple advantageous properties making them a perfect fit for FTC pathing!
 
-* B-Splines are $C_2$ continuous: Their curves are connected, their first derivatives
+* BSplines are $C_2$ continuous: Their curves are connected, their first derivatives
 are connected, and the second derivatives, or the derivatives of the derivatives are connected.
 * This translates to exceptionally smooth pathing without any sudden jerks, and enables efficient computing.
-* B-Splines are $G_1$ continuous, meaning that the curvature is continuous. This essentially
+* BSplines are $G_1$ continuous, meaning that the curvature is continuous. This essentially
 means that the robot won't experience any acceleration jumps while traveling the path.
-* Similar to Bezier Curves(not exactly like), B-Splines do not interpolate **ANY** control points. As a result, B-Splines do not pass through
-any of the specified control points, as only the endpoints are interpolated. However, we devised a way to get around this
-using a clever mathematical concept.
-* B-Splines have complete local control. This means that adjusting a control point will only
+* BSplines are somewhat similar to Bezier Curves as they do not interpolate **ANY** control points.
+As a result, BSplines do not pass through any of the specified control points, as only the endpoints are interpolated.
+However, we devised a way to get around through the application of clever mathematical concepts.
+* BSplines have complete local control. This means that adjusting a control point will only
 affect a small part of the curve, and not the whole thing. For example, adjusting a control point
 near one of the spline's endpoints will not change anything near the other endpoint.
 
 
-## B-Spline Math
+## The Math Behind a BSpline
 
-How do we actually form a B Spline? Let's first talk about the matrix form of a function.
+How is a BSpline actually formed? To acquire an in-depth understanding of the formation of a BSpline,
+the matrix form of a function must be understood first.
 
 The matrix form of a function is defined as $f(t) = T*C*P$ where $T$, $C$, and $P$ are all matrices
 representing the function's polynomial form. T is a matrix $\begin{bmatrix}1 & t & t^2 & t^3 \end{bmatrix}$
- that represent the
-$T$ value in the polynomial. The $C$ matrix, or Characteristic matrix is the thing that defines the
-curve. Which looks like: 
+that represent the $T$ value in the polynomial. The $C$ matrix, or Characteristic matrix is the thing that defines the
+curve. Below is a representation of how the matrix would look:
 
 $\begin{bmatrix}
    c_0 & c_1 & c_2 & c_3 \\
@@ -70,8 +70,8 @@ $\begin{bmatrix}
    c_{12} & c_{13} & c_{14} & c_{15} \\
 \end{bmatrix}$
 
-This matrix is constant based on the type of spline you are using. For example. All cubic bezier curves will
-have the same $C$ matrix, but a B-Spline will have a different one for all types of B-Splines.
+This matrix is constant based on the type of spline you are using. For example, all cubic bezier curves will
+have the same $C$ matrix, but a BSpline will have a different one for all types of BSplines.
 Lastly, we have the $P$, the point matrix. This is expressed as:
 
 $\begin{bmatrix}
@@ -81,7 +81,7 @@ $\begin{bmatrix}
     P_3 \\
 \end{bmatrix}$
 
-Now, let's put the values into the $C$ matrix and put it all together!
+Now, let's input the values into the $C$ matrix and assemble it all together!
 
 $f(t) =$
 $\begin{bmatrix}1 & t & t^2 & t^3 \end{bmatrix}$
@@ -98,17 +98,17 @@ $\begin{bmatrix}
     P_3 \\
 \end{bmatrix}$
 
-So... now that we have the matrix form, what does it do? We can use matrix multiplication to turn the
-matrices into a polynomial. Let's look at the polynomial coefficient form. This is where we express
-the matrix in terms of $t$, using the $P$ matrix as coefficients. First, lets express the $P$
-matrix like this:
+After obtaining the matrix form, we can utilize matrix multiplication to transform the
+matrices into a polynomial. Let's look at the polynomial coefficient form. This is
+where the matrix is expressed in terms of $t$, using the $P$ matrix as coefficients.
+
+First, the $P$ matrix is expressed like this:
 
 $\begin{bmatrix}
     P_0 & P_1 & P_2 & P_3 
 \end{bmatrix}$
 
-Now, multiply each of the $P$ values by their respective point in each row of the $C$ matrix.
-
+Next, each of the $P$ values is multiplied by its respective point in each row of the $C$ matrix:
 
 $\begin{bmatrix}
    1*P_0 & 4*P_1 & 1*P_2 & 0*P_3 \\
@@ -117,8 +117,8 @@ $\begin{bmatrix}
    -1*P_0 & 3*P_1 & -3*P_2 & 1*P_3 \\
 \end{bmatrix}$
 
+Then, the $t$ matrix is written like this:
 
-Then, we write the $T$ matrix like this:
 $\begin{bmatrix}
     1\\
     t\\
@@ -126,8 +126,8 @@ $\begin{bmatrix}
     t^3 \\
 \end{bmatrix}$
 
-And finally, multiply the inside values by the corresponding rows, and add the inside of the matrix togehter,
-resulting in the final polynomial coefficient form:
+Finally, the inside values are multiplied by the corresponding rows, and the inside of the matrix
+is added together, thus resulting in the final polynomial coefficient form:
 
 $f(t)=$
 
@@ -138,4 +138,3 @@ $t(-3P_0 + 3P_2)$       $+$
 $t^2(3P_0 - 6P_1 + 3P_2 )$        $+$
 
 $t^3(-P_0 + 3P_1 + -3P_2 + P_3)$
-

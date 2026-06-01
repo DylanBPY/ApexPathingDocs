@@ -1,5 +1,5 @@
 ```java
-Path tangentOptimalPath = new PathBuilder()
+Path examplePath = new PathBuilder()
         .addControlPoints(
                 lastPath.getEndPose(),
                 pose.of(120, 20),
@@ -10,11 +10,11 @@ Path tangentOptimalPath = new PathBuilder()
         .addDistanceCallback(0.8, this::dropElement)
         .build();
 
-Turn callbackTurn = new TurnBuilder(tangentOptimalPath.getEndPose())
+Turn callbackTurn = new TurnBuilder(examplePath.getEndPose())
         .turnTo(Angle.fromDeg(0))
         .addAngularCallback(Angle.fromDeg(315), this::deployOuttake)
         .build();
 
 Follower follower = constants.build();
-follower.follow(tangentOptimalPath);
+follower.follow(examplePath);
 ```
