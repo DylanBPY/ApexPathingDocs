@@ -1,57 +1,39 @@
+import { Callout } from 'nextra/components'
+
 # Drivetrain Configs
 ___
 
+
+
+<Callout type="warning">
+It's imporant to change the drivetrain listed in constants you can see it is `BaseDrivetrainConfig<DRIVETRAIN TYPE.Config>`
+This is important because if it's the wrong drivetrain, the constants file will not compile
+</Callout>
 ## Mecanum Drive
 The mecanum drivetrain takes multiple arguments in the constants file: 
 * Motor names
 * Motor directions
 * Maximum power
+* Robot centric drive
 ```java
 @Override
-    public DrivetrainConstants setDrivetrainConstants() { // Any DrivetrainConstants
-        return new MecanumConstants()
-                // Set the names of the motors in your hardware map
-                .setFrontLeftMotorName("frontLeftMotor")
-                .setBackLeftMotorName("backLeftMotor")
-                .setFrontRightMotorName("frontRightMotor")
-                .setBackRightMotorName("backRightMotor")
-                //motor directions
-                .setFrontRightReversed(true)
-                .setBackRightReversed(true)
-                .setBrakeMode(true)
-                //robot centric or field centric.
+    public BaseDrivetrainConfig<Mecanum.Config> setDrivetrainConstants() { // Any baseDrivetrainConfig child
+        return new Mecanum.Config()
+                //front left motor name + direction 
+                .setFrontLeftMotor(new MotorFactory("frontLeftMotor"))
+                //back left motor name + direction
+                .setBackLeftMotor(new MotorFactory("backLeftMotor"))
+                //front right motor name + direction
+                .setFrontRightMotor(new MotorFactory("frontRightMotor").reverse())
+                //back right motor name + direction
+                .setBackRightMotor(new MotorFactory("backRightMotor").reverse())
+                //robot centric or field centric
                 .setRobotCentric(true)
                 //max power threshold
                 .setMaxPower(1.0);
     }
 ```
 
-## Tank Drive
-The tank drivetrain takes multiple arguments in the constants file: 
-* Motor names
-* Motor directions
-* Maximum power
-
-```java
-public DrivetrainConstants setDrivetrainConstants() { // Any DrivetrainConstants
-        return new TankConstants()
-        //4 or 2 motor tank drive
-        .setFourMotorDrive(true)
-        //motor names
-        .setFrontLeftMotorName("leftFront")
-        .setBackLeftMotorName("leftRear")
-        .setFrontRightMotorName("rightFront")
-        .setBackRightMotorName("rightRear")
-        //motor directions
-        .setFrontRightReversed(true)
-        .setBackRightReversed(true)
-        .setBrakeMode(true)
-        //robot centric or field centric. (field centric not currently supported for tank drive)
-        .setRobotCentric(true)
-        //max power threshold
-        .setMaxPower(1.0);
-}
-```
 
 ## Swerve Drive
 The swerve drivetrain takes multiple arguments in the constants file:
@@ -64,68 +46,30 @@ The swerve drivetrain takes multiple arguments in the constants file:
 * angular offsets for each module
 Note: The swerve drivetrain constants require declarations grouped together in modules.
 ```java
-public DrivetrainConstants setDrivetrainConstants() { // Any DrivetrainConstants
-        return new SwerveConstants()
-        .setFrontLeftModuleConstants(
-                new SwerveModuleConstants()
-                        //motor name
-                        .setMotorName("frontLeftMotor")
-                        //servo name
-                        .setServoName("flServo")
-                        //encoder name
-                        .setEncoderName("flEncoder")
-                        //motor direction
-                        .setMotorReversed(false)
-                        //.setOffset angle
-                        .setModuleAngleOffset(0) //degrees
-        )
-        .setFrontRightModuleConstants(
-                new SwerveModuleConstants()
-                        //motor name
-                        .setMotorName("frontRightMotor")
-                        //servo name
-                        .setServoName("frServo")
-                        //encoder name
-                        .setEncoderName("frEncoder")
-                        //motor direction
-                        .setMotorReversed(true)
-                        //.setOffset angle
-                        .setModuleAngleOffset(0) //degrees
-        )
-        .setBackLeftModuleConstants(
-                new SwerveModuleConstants()
-                        //motor name
-                        .setMotorName("backLeftMotor")
-                        //servo name
-                        .setServoName("blServo")
-                        //encoder name
-                        .setEncoderName("blEncoder")
-                        //motor direction
-                        .setMotorReversed(false)
-                        //.setOffset angle
-                        .setModuleAngleOffset(0) //degrees
-        )
-        .setBackRightModuleConstants(
-                new SwerveModuleConstants()
-                        //motor name
-                        .setMotorName("backRightMotor")
-                        //servo name
-                        .setServoName("brServo")
-                        //encoder name
-                        .setEncoderName("brEncoder")
-                        //motor direction
-                        .setMotorReversed(true)
-                        //.setOffset angle
-                        .setModuleAngleOffset(0) //degrees
-        )
-        //max power threshold
-        .setMaxPower(1.0)
-        //trackwidth (supports custom units)
-        .setTrackWidth(Distance.fromMm(0))
-        //wheelbase (supports custom units)
-        .setWheelbase(Distance.fromMm(0))
-        //robot centric or field centric.
-        .setRobotCentric(true);
-}```
+@Override
+    public BaseDrivetrainConfig<CoaxialSwerve.Config> setDrivetrainConstants() { // Any baseDrivetrainConfig child
+        return new CoaxialSwerve.Config()
+                //front left motor name 
+                .setFrontLeftMotor(new MotorFactory("frontLeftMotor"))
+                //back left motor name
+                .setBackLeftMotor(new MotorFactory("backLeftMotor"))
+                //front right motor name
+                .setFrontRightMotor(new MotorFactory("frontRightMotor"))
+                //back right motor name
+                .setBackRightMotor(new MotorFactory("backRightMotor"))
+                //servo names
+                .setServoNames("frontLeftServo", "frontRightServo", "backLeftServo", "backRightServo")
+                //encoder names 
+                .setEncoderNames("flEncoder", "frEncoder", "blEncoder", "brEncoder")
+                //robot trackwidth
+                .setTrackWidth(Dist.fromIn(14))
+                //robot wheelbase
+                .setWheelbase(Dist.fromIn(14))
+                //max power threshold
+                .setMaxPower(1)
+                //robot centric or field centric
+                .setRobotCentric(true);
+    }
+```
 
 
