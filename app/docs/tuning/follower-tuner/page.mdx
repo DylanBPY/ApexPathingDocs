@@ -1,0 +1,62 @@
+import { Tabs, Callout, Steps } from 'nextra/components'
+
+<Callout type="warning">
+  The tuning process is currently NOT compatible with On Bot Java due to its use of Panels for the Manual Tuning Mode, and is merely a beta version for testing.
+  However, the public official release coming soon *will* be compatible with On Bot Java.
+</Callout>
+
+# Follower Tuner
+---
+The Follower Tuner is the sole tuner that you need to run in order to get Apex Pathing up and running on your robot.
+It features an extremely advanced, unified tuning process which provides you with the choice to either sit back and
+allow the tuners to run completely automatically, or to run the tuners manually depending on your preference, all from a single OpMode.
+All you have to do is follow the clear and concise instructions on the telemetry and before you know it, you're ready to Path your way
+to the Peaks!
+
+<Callout type="warning">
+  Clear a large open area before running this tuner to ensure safe tuning.
+</Callout>
+
+<Steps>
+### Run the OpMode
+Select the **Follower Tuner** OpMode on your Driver Station. Read the telemetry at init to confirm which tuning phases (if any) have already been completed, and follow the relevant instructions if you need to skip ahead in the tuning process.
+
+### Follow the Telemetry Sequence
+This unified tuner handles the entire tuning process in a single OpMode. Follow the on-screen Driver Station telemetry to progress sequentially through the phases:
+1. Heading PDS
+2. Translation PDS
+3. Velocity FF
+4. Max Lateral Accel
+
+### The Tuning Process
+* At the start of every single tuning phase, you may press 'A' to toggle between running the tuner in automatic or manual mode
+* If you choose to run the tuner in automatic mode, you don't need to do anything for the remainder of the tuner until the confirmation phase as the OpMode will handle it for you!
+* During the confirmation phase, you can drive your robot around as normal to test your values and determine if you're satisfied with them.
+* If you run it in manual mode however, you will need to use Panels to tune your values manually.
+* To do this, connect to your robot's Control Hub via WiFi, open your browser and go to `192.168.43.1:8001`. Once there, click on the drop-down menu for the FollowerTuner OpMode
+where you will see an option to adjust the value for `ksGuess`. You may input a value and press enter to confirm it, then drive your robot around as normal to test. Continue tuning
+until you are satisfied with the results.
+* Once you are done tuning, you may press 'A' to save your values and advance to the next tuning phase.
+* Alternatively, you may press 'B' to rerun the tuner and repeat the process from the top if you are not satisfied with your values
+* At any point during the tuner, you can press 'Y' to instantly stop your robot, and press 'Y' again to resume. This stops the robot without stopping the OpMode
+and is best practice to ensure all your values are saved.
+
+| Button | Action |
+|--------|--------|
+| `gamepad1.a` | Toggle Auto/Manual mode OR Save and advance |
+| `gamepad1.b` | Start tuning sequence OR Rerun tuner |
+| `gamepad1.y` | Pause / Resume automated tuning |
+| `gamepad1.sticks` | TeleOp drive to manually test tuning during manual tuning mode or the confirmation phase of the auto tuning mode|
+
+### Apply the Values
+* Once the final phase is confirmed, the tuner automatically saves your newly calculated constants directly to your Control Hub at `/sdcard/FIRST/FollowerConstants.json`.
+* Once saved, your `FollowerConstants` file automatically accesses these saved constants and assigns them to their respective variables. You will see a pop-up
+on your telemetry confirming that the values have been saved, and then, you're good to go!
+
+### Accessing Your Constants
+* If you wish to access the `FollowerConstants` JSON file on the Control Hub, start by connecting to it via WiFi or a USB cable
+* Open Android Studio and ensure that your Control Hub is connected by ADB.
+* Next, open the Device File Explorer and navigate to the `/sdcard/FIRST/` folder
+* There, you will see the `FollowerConstants.json` file. Double click to open it or right click to save it to your computer.
+
+</Steps>

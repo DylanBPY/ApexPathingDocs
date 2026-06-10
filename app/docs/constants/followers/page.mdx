@@ -1,30 +1,8 @@
 # Follower Configs
-___
-
-## P2P Follower
-The P2P follower takes multiple arguments in the constants file:
-* Heading, drive, strafe, PDLs
-* Heading tolerance
-* Translational tolerance
-
-### Tuning your follower constants
-In order to obtain the values of your follower constants, you must run the following tuners:
-* [Axial Tuner](/docs/tuning/axial-tuner)
-* [Heading Tuner](/docs/tuning/heading-tuner)
-* [Lateral Tuner](/docs/tuning/lateral-tuner)
-
-Refer to the Tuning section of the documentation to know more about how to run these tuners.
-```java
-    @Override
-        public FollowerConstants setFollowerConstants() { // Any FollowerConstants
-            return new P2PFollowerConstants()
-                    .setAxialCoeffs(new PDSController.PDSCoefficients(0.0, 0.0, 0.0, 0.0))
-                    .setStrafeCoeffs(new PDSController.PDSCoefficients(0.0, 0.0, 0.0, 0.0))
-                    .setHeadingCoeffs(new PDSController.PDSCoefficients(0.0, 0.0, 0.0, 0.0))
-                    .setHeadingTolerance(Angle.fromDeg(2.0))
-                    .setAxialTolerance(Distance.fromIn(1.5))
-                    .setMaxAxialPower(1)
-                    .setStrafeTolerance(Distance.fromIn(1.5))
-                    .setMaxTurnPower(1);
-        }
-        ```
+---
+## Tuning your Follower
+* In order to tune your follower, a single, unified tuner called the [Follower Tuner](/docs/tuning/follower-tuner)
+* This tuner is capable of tuning all of the necessary follower constants *and* saving the values to the `FollowerConstants` file
+* It also has the flexibility of a manual mode, enabling users to tune the Constants *manually* using Panels
+* This is the only tuner which needs to be run for the follower, and doesn't even require you to input any values into the Constants file!
+* Make sure to thoroughly read the instructions before running this tuner and to follow the instructions on the telemetry of your Driver Hub
