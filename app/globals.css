@@ -116,16 +116,9 @@ h1, h2 {
 .nextra-sidebar-footer > button,
 .nextra-sidebar-footer button {
   mix-blend-mode: screen !important;
-  opacity: 1 !important;
-  filter: blur(0.3px) !important;
+  opacity: 1.0 !important;
   background-color: transparent !important;
   
   animation: none !important; 
   transition: opacity 0.3s ease, filter 0.3s ease !important;
-}
-
-.nextra-sidebar-footer > button:hover,
-.nextra-sidebar-footer button:hover {
-  opacity: 0.8 !important;
-  filter: blur(0px) !important;
 }
