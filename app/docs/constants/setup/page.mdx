@@ -1,35 +1,25 @@
-import { ScrollBehavior } from 'next/dist/client/components/router-reducer/router-reducer-types'
 import { Steps, Table, Callout } from 'nextra/components'
 
-# Constants Setup
+# Constants Setup and Testing
 ---
-<Callout type="info">
-The constants file is where the user adds all the info about their robot that the localizer stores in order to make the library function.
-Here, you will input motor names, odo pod offsets, robot measurements, tuning values, and more. This is the most important file because it stores all the data for your robot.
-</Callout>
+The constants class is where information about your robot is stored in order to make the library function. 
+It holds two subconfigs:
+* **Drivetrain Constants:** Defines your drivetrain type and information about it
+* **Localizer Constants:** Defines how your robot tracks its position on the field
 
-Clone the project on github and navigate to the constants file. The constants file holds three main types of constants:
-* **Drivetrain Constants:** Constants specifically related to your drivetrain, different for each type
-* **Localizer Constants:** Constants relating to your odometry pods, encoder offsets, and more
-* **Follower Constants:** Define how your robot follows a path
-
+## Defining Constants
 <Steps>
 ### Open `Constants.java`
 In Android Studio, double press the shift key to open the search prompt and search for 
-`TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Constants.java`. When you press enter, the file holding robot
-constants will open up, this is the only file you will need to edit.
+`TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Constants.java`. When you press enter, the constants class will open.
 
 ### Drivetrain Constants
 Head over to the [Drivetrain Configuration](../constants/drivetrains/) page which will guide you through the 
-process of creating the `DrivetrainConstants` for your robot. Once you've done that, come back here.
- 
+process of configuring your drivetrain. Once you've done that, come back here.
+
 ### Localizer Constants
 Similarly, the [Localizer Configuration](../constants/localizers/) page which will guide you through setting
-up a `LocalizerConstants` class for your robot. This should be done after the drivetrain constants are set up. Once
-you've done that, come back here.
-
-### Leave follower constants for now
-The follower constants will be filled out as we tune your robot, so you can leave those for now.
+up your localizer. Once you've done that, come back here.
 
 ### Verify functionality
 At this point, all of your constants should be filled out. Now you can open up the `Apex TeleOp Test` OpMode on your
@@ -97,10 +87,10 @@ If your robot isn't behaving as expected, here are some common issues to check f
 
 | Issue | Resolution |
 | --- | --- |
-| **Controls are backwards or inverted** | Verify and correct your motor reversal settings (`setFrontRightReversed`, `setBackRightReversed`, etc.). |
-| **X or Y position going the wrong way** | Reverse the corresponding odometry pod direction using `setXPodDirection` or `setYPodDirection`. |
-| **X and Y axes are swapped** | Reverse the X and Y odometry directions (or check encoder port/direction assignments). |
+| **Controls are backwards or inverted** | Verify and correct your motor reversals. |
+| **X or Y position going the wrong way** | Reverse the corresponding localizer direction. |
+| **X and Y axes are swapped** | Reverse the X and Y localizer directions (or check encoder port/direction assignments). |
 
 ## Tuning
-The last step before being able to run your first path is tuning the follower constants. This entire process will be
-completely automated in the future, but for now, you'll need to tune manually with the [tuning guide](/docs/tuning/overview).
+The last step before being able to run your first path is tuning the follower. Don't worry, it's automatic!
+The [tuning guide](/docs/tuning/overview) will show you how to run the tuner.
