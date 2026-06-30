@@ -1,11 +1,5 @@
 export default {
-    "setup": "Setup",
-    "drivetrains" : "Drivetrain Configuration",
-  "localizers": {
-    title: "Localizer Configuration",
-    theme: {
-      toc:false,
-    }
-    },
-    "followers" : "Follower Configuration",
+  "setup": "Setup and Testing",
+  "drivetrains" : { title: "Drivetrain Constants", theme: { toc:false } },
+  "localizers": { title: "Localizer Constants", theme: { toc:false } }
 }

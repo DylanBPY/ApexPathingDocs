@@ -1,20 +1,24 @@
 export default {
     "about": "About Us",
-    
+
     "setup-section": {
         type: "separator",
-        title: "Installation & Tuning"
+        title: "Setup"
     },
-    "getting-started": "Getting Started",
     "installation": "Installation",
     "constants": "Constants",
-    "tuning": "Tuning Guides" ,
-    "pathing-with-apex": "Pathing With Apex",
+    "tuning": "Follower Tuner" ,
+
+    "general-usage-section": {
+        type: "separator",
+        title: "General Usage"
+    },
+    "following-paths": "Following Paths",
 
     "concepts-section": {
         type: "separator",
         title: "Core Concepts"
     },
     "misc": "Controllers",
-  "bspline-theory": "B Spline Theory",
+    "bspline-theory": "B Spline Theory",
 }

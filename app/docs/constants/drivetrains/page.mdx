@@ -1,76 +1,180 @@
-import { Callout } from 'nextra/components'
+import { Tabs, Steps } from 'nextra/components'
 
-# Drivetrain Configs
-___
+# Drivetrain Constants
+---
+Choose your drivetrain type below and follow the steps to configure it.
 
-
-
-<Callout type="warning">
-It's imporant to change the drivetrain listed in constants you can see it is `BaseDrivetrainConfig<DRIVETRAIN TYPE.Config>`
-This is important because if it's the wrong drivetrain, the constants file will not compile
-</Callout>
-## Mecanum Drive
-The mecanum drivetrain takes multiple arguments in the constants file: 
-* Motor names
-* Motor directions
-* Maximum power
-* Robot centric drive
-```java
-@Override
-    public BaseDrivetrainConfig<Mecanum.Config> setDrivetrainConstants() { // Any baseDrivetrainConfig child
+<Tabs items={['Mecanum', 'Tank', 'Coaxial Swerve', 'Differential Swerve', "Kiwi", 'Dual Actuated']}>
+  <Tabs.Tab>
+    <Steps>
+    ### Replace `drivetrainConfig()`
+    ```java
+    @Override
+    public BaseDrivetrainConfig<?> drivetrainConfig() {
         return new Mecanum.Config()
-                //front left motor name + direction 
                 .setFrontLeftMotor(new MotorFactory("frontLeftMotor"))
-                //back left motor name + direction
                 .setBackLeftMotor(new MotorFactory("backLeftMotor"))
-                //front right motor name + direction
                 .setFrontRightMotor(new MotorFactory("frontRightMotor").reverse())
-                //back right motor name + direction
-                .setBackRightMotor(new MotorFactory("backRightMotor").reverse())
-                //robot centric or field centric
-                .setRobotCentric(true)
-                //max power threshold
-                .setMaxPower(1.0);
+                .setBackRightMotor(new MotorFactory("backRightMotor").reverse());
     }
-```
+    ```
+    ### Motors
+    Replace the names of the motors with the names of your drivetrain motors in the hardware configuration.
+    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](../classes/motor-factory/) class.
+    You can use the `MotorDebugger` OpMode in the [OpModes](../opmodes/) page to get your motor positions and directions correct.
 
-
-## Swerve Drive
-The swerve drivetrain takes multiple arguments in the constants file:
-* Drive motor names
-* Drive motor directions
-* Turn servo names
-* Analog encoder names
-* Trackwidth and wheelbase measurements
-* maximum power
-* angular offsets for each module
-
-Note: The swerve drivetrain constants require declarations grouped together in modules.
-```java
-@Override
-    public BaseDrivetrainConfig<CoaxialSwerve.Config> setDrivetrainConstants() { // Any baseDrivetrainConfig child
-        return new CoaxialSwerve.Config()
-                //front left motor name 
+    ### Global drivetrain constants (optional)
+    See the bottom of this page for more details
+    </Steps>
+  </Tabs.Tab>
+  <Tabs.Tab>
+    <Steps>
+    ### Replace `drivetrainConfig()`
+    ```java
+    @Override
+    public BaseDrivetrainConfig<?> drivetrainConfig() {
+        return new Tank.Config()
                 .setFrontLeftMotor(new MotorFactory("frontLeftMotor"))
-                //back left motor name
                 .setBackLeftMotor(new MotorFactory("backLeftMotor"))
-                //front right motor name
-                .setFrontRightMotor(new MotorFactory("frontRightMotor"))
-                //back right motor name
-                .setBackRightMotor(new MotorFactory("backRightMotor"))
-                //servo names
-                .setServoNames("frontLeftServo", "frontRightServo", "backLeftServo", "backRightServo")
-                //encoder names 
-                .setEncoderNames("flEncoder", "frEncoder", "blEncoder", "brEncoder")
-                //robot trackwidth
-                .setTrackWidth(Dist.fromIn(14))
-                //robot wheelbase
-                .setWheelbase(Dist.fromIn(14))
-                //max power threshold
-                .setMaxPower(1)
-                //robot centric or field centric
-                .setRobotCentric(true);
+                .setFrontRightMotor(new MotorFactory("frontRightMotor").reverse())
+                .setBackRightMotor(new MotorFactory("backRightMotor").reverse());
     }
-```
+    ```
+    ### Motors
+    Replace the names of the motors with the names of your drivetrain motors in the hardware configuration.
+    Don't define the back left and back right motors if you are using a 2-motor tank drive.
+    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](../classes/motor-factory/) class.
+    You can use the `MotorDebugger` OpMode in the [OpModes](../opmodes/) page to get your motor positions and directions correct.
 
+    ### Global drivetrain constants (optional)
+    See the bottom of this page for more details
+    </Steps>
+  </Tabs.Tab>
+  <Tabs.Tab>
+    <Steps>
+    ### Replace `drivetrainConfig()`
+    ```java
+    @Override
+    public BaseDrivetrainConfig<?> drivetrainConfig() {
+        return new CoaxialSwerve.Config()
+                .setFrontLeftMotor(new MotorFactory("frontLeftMotor"))
+                .setFrontRightMotor(new MotorFactory("frontRightMotor").reverse())
+                .setBackLeftMotor(new MotorFactory("backLeftMotor"))
+                .setBackRightMotor(new MotorFactory("backRightMotor").reverse())
+                .setServoNames("flServo", "frServo", "blServo", "brServo")
+                .setEncoderNames("flEncoder", "frEncoder", "blEncoder", "brEncoder")
+                .setTrackWidth(Dist.fromMm(0))
+                .setWheelbase(Dist.fromMm(0))
+                .setOffsetAngle(Angle.fromDeg(0))
+                .setSteeringCoefficients(new PDSController.PDSCoefficients());
+    }
+    ```
+    ### Motors
+    Replace the names of the motors with the names of your drivetrain motors in the hardware configuration.
+    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](../classes/motor-factory/) class.
+    You can use the `MotorDebugger` OpMode in the [OpModes](../opmodes/) page to get your motor positions and directions correct.
 
+    ### Servos
+    Replace the names of the servos with the names of your drivetrain servos in the hardware configuration.
+
+    ### Encoders
+    Replace the names of the encoders with the names of your drivetrain encoders in the hardware configuration.
+
+    ### Track width and wheelbase
+    Set the track width (distance from left wheel center to right wheel center) and wheelbase 
+    (distance from front wheel center to back wheel center) of your robot as a [Dist](../classes/dist/).
+
+    ### Offset angle and steering coefficients
+    Use the `SwerveTuner` OpMode in the [OpModes](../opmodes/) page to determine the offset angle
+    and PDS steering coefficients of your pods. The offset angle is the static angle offset from 0 
+    degrees for your wheels to be facing forwards. It is defined as an [Angle](../classes/angle/).
+    The steering coefficients are used to correct positional errors in the steering of your pods. 
+
+    ### Global drivetrain constants (optional)
+    See the bottom of this page for more details
+    </Steps>
+  </Tabs.Tab>
+  <Tabs.Tab>**Differential Swerve Drivetrain**</Tabs.Tab>
+  <Tabs.Tab>
+    <Steps>
+    ### Replace `drivetrainConfig()`
+    ```java
+    @Override
+    public BaseDrivetrainConfig<?> drivetrainConfig() {
+        return new Kiwi.Config()
+                .setFrontLeftMotor(new MotorFactory("frontLeftMotor"))
+                .setBackMotor(new MotorFactory("backMotor"))
+                .setFrontRightMotor(new MotorFactory("frontRightMotor").reverse());
+    }
+    ```
+    ### Motors
+    Replace the names of the motors with the names of your drivetrain motors in the hardware configuration.
+    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](../classes/motor-factory/) class.
+    You can use the `MotorDebugger` OpMode in the [OpModes](../opmodes/) page to get your motor positions and directions correct.
+
+    ### Global drivetrain constants (optional)
+    See the bottom of this page for more details
+    </Steps>
+  </Tabs.Tab>
+  <Tabs.Tab>
+    <Steps>
+    ### Replace `drivetrainConfig()`
+    ```java
+    @Override
+    public BaseDrivetrainConfig<?> drivetrainConfig() {
+        return new DualActuated.Config()
+                .setFrontLeftMotor(new MotorFactory("frontLeftMotor"))
+                .setBackLeftMotor(new MotorFactory("backLeftMotor"))
+                .setFrontRightMotor(new MotorFactory("frontRightMotor").reverse())
+                .setBackRightMotor(new MotorFactory("backRightMotor").reverse())
+                .addActuator("flServo", 0.0, 1.0)
+                .addActuator("blServo", 0.0, 1.0)
+                .addActuator("frServo", 0.0, 1.0)
+                .addActuator("brServo", 0.0, 1.0);
+    }
+    ```
+    ### Motors
+    Replace the names of the motors with the names of your drivetrain motors in the hardware configuration.
+    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](../classes/motor-factory/) class.
+    You can use the `MotorDebugger` OpMode in the [OpModes](../opmodes/) page to get your motor positions and directions correct.
+
+    ### Actuators
+    You can add or remove `.addActuator()` calls depending on how many actuators your drivetrain has. 
+    Replace the names of the actuators with the names of your drivetrain actuators in the hardware configuration. 
+    The second and third parameters are the `tractionPosition` and `holonomicPosition` of the actuator respectively.
+
+    ### Initial state (optional)
+    You can set the initial state of the actuators with `.setInitialState(DualActuated.DriveState initialState)`.
+    The two possible states are `DualActuated.DriveState.TRACTION` and `DualActuated.DriveState.HOLONOMIC`.
+    The default is `HOLONOMIC`.
+
+    ### Global drivetrain constants (optional)
+    See the bottom of this page for more details
+    </Steps>
+  </Tabs.Tab>
+</Tabs>
+
+## Global Drivetrain Constants
+Some constants are common to all drivetrains. All of these are optional and have default values which
+are usually sufficient for most robots. You can override them in your drivetrain configuration if you want to customize them.
+
+- `.setRobotCentric(boolean robotCentric)`
+    - If true, `follower.teleOpDrive()` will use robot-centric controls, otherwise it will use field-centric controls.
+    - Default is true (robot centric)
+    - You can swap between robot-centric and field-centric on the fly with
+    `follower.setRobotCentric(boolean robotCentric)` in your OpMode.
+- `.setMaxPower(double maxPower)`
+    - Sets the maximum power that can be applied to drivetrain motors.
+    - Default is 1.0 (100% power)
+- `setLinearVelocityLimit(Dist linearVelocityLimit)`
+    - Sets the maximum linear velocity of the robot as a [Dist](../classes/dist/) in units per second.
+    - Default is 0 (disabled, no limit)
+- `setAngularVelocityLimit(Angle angularVelocityLimit)`
+    - Sets the maximum angular velocity of the robot as an [Angle](../classes/angle/) in units per second.
+    - Default is 0 (disabled, no limit)
+- `setLinearAccelerationLimit(Dist linearAccelerationLimit)`
+    - Sets the maximum linear acceleration of the robot as a [Dist](../classes/dist/) in units per second squared.
+    - Default is 0 (disabled, no limit)
+- `setAngularAccelerationLimit(Angle angularAccelerationLimit)`
+    - Sets the maximum angular acceleration of the robot as an [Angle](../classes/angle/) in units per second squared.
+    - Default is 0 (disabled, no limit)

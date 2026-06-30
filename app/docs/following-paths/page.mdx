@@ -1,0 +1,239 @@
+import { Tabs } from "nextra/components"
+
+# Following Paths
+---
+This section covers how to build autonomous routines with clean syntax. Apex is extremely easy 
+to integrate into FSMs, command libraries and action systems, enabling you to choose
+the method that best fits your team's needs.
+
+## FSM Integration
+There are multiple ways to integrate Apex into a Finite State Machine (FSM) style autonomous routine. 
+The first is to use the `hasStarted()` and `hasEnded()` methods of the `FollowerMovement` class to 
+determine when to start and stop following a path.
+
+```java
+while (opModeIsActive()) {
+    follower.update();
+    switch (state) {
+        case 0:
+            if (!path1.hasStarted()) follower.follow(path1);
+            if (path1.hasEnded()) state = 1;
+            break;
+        case 1:
+            if (!path2.hasStarted()) follower.follow(path2);
+            if (path2.hasEnded()) state = 2;
+            break;
+        case 2:
+            follower.stop();
+            telemetry.addLine("Auto Complete!");
+            break;
+    }
+}
+```
+
+The second is to use the `isBusy()` method of the `Follower` class to determine when the follower 
+is done with a path. This method may be more familiar to some teams.
+
+```java
+while (opModeIsActive()) {
+    follower.update();
+    switch (state) {
+        case 0:
+            follower.follow(path1);
+            state = 2;
+            break;
+        case 2:
+            if (!follower.isBusy()) {
+                follower.follow(path2);
+                state = 3;
+            }
+            break;
+        case 3:
+            if (!follower.isBusy()) {
+                follower.stop();
+                telemetry.addLine("Auto Complete!");
+            }
+            break;
+    }
+}
+```
+
+## Sequential Iterator Integration
+Another option is to put your paths in an array and iterate through them. This is a great option if you use
+only callbacks and don't need to do anything else in your loop. It keeps the auto clean and simple.
+
+```java
+while (opModeIsActive()) {
+    follower.update();
+    if (iterator < paths.length - 1) {
+        if (!follower.isBusy()) {
+            iterator++;
+            follower.follow(paths[iterator]);
+        }
+    } else {
+        follower.stop();
+        telemetry.addLine("Auto Complete!");
+    }
+}
+```
+
+## Command System Integration
+We provide commands and examples for integrating Apex into the most popular command libraries in FTC.
+These can be adapted to work with your specific command library.
+<Tabs items={['FTCLib', 'NextFTC', 'Solverslib', 'Ivy']}>
+    <Tabs.Tab>
+        We recommend using this command class to integrate Apex into FTCLib's command system.
+        It is a simple command that takes in a `Follower` and a `FollowerMovement`.
+
+        ```java
+        package org.firstinspires.ftc.teamcode.commands; // Change this for your setup
+
+        import com.arcrobotics.ftclib.command.CommandBase;
+        // Import Follower and FollowerMovement classes from Apex
+
+        public class FollowPathCommand extends CommandBase {
+            private final Follower follower;
+            private final FollowerMovement movement;
+
+            public FollowPathCommand(Follower follower, FollowerMovement movement) {
+                this.follower = follower;
+                this.movement = movement;
+            }
+
+            @Override
+            public void initialize() { follower.follow(movement); }
+
+            @Override
+            public void execute() { follower.update(); }
+
+            @Override
+            public boolean isFinished() { return !follower.isBusy(); }
+
+            @Override
+            public void end(boolean interrupted) {
+                if (interrupted) follower.stop();
+            }
+        }
+        ```
+
+        This command can then be used like any other command, for example in a `SequentialCommandGroup`:
+
+        ```java
+        schedule(new SequentialCommandGroup(
+            new FollowPathCommand(follower, path1),
+            new FollowPathCommand(follower, path2),
+            new InstantCommand(() -> {
+                follower.stop();
+                telemetry.addLine("Auto Complete!");
+                telemetry.update();
+            })
+        ));
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        We recommend using this command method to integrate Apex into NextFTC's command system.
+        It is a simple command that takes in a `Follower` and a `FollowerMovement`.
+
+        ```java
+        public static Command follow(Follower follower, FollowerMovement movement) {
+            return new LambdaCommand()
+                .setStart(() -> { follower.follow(movement); })
+                .setUpdate(() -> { follower.update(); })
+                .setStop(interrupted -> { if (interrupted) follower.stop(); })
+                .setIsDone(() -> !follower.isBusy())
+                .named("Apex Pathing Follow Command");
+            }
+        ```
+
+        This command can then be used like any other command, for example in a `SequentialGroup`:
+
+        ```java
+        new SequentialGroup(
+            follow(follower, path1),
+            follow(follower, path2),
+            instant(() -> {
+                follower.stop();
+                telemetry.addLine("Auto Complete!");
+                telemetry.update();
+            })
+        ).schedule();
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        We recommend using this command class to integrate Apex into Solverslib's command system.
+        It is a simple command that takes in a `Follower` and a `FollowerMovement`.
+
+        ```java
+        package org.firstinspires.ftc.teamcode.commands; // Change this for your setup
+
+        import com.seattlesolvers.solverslib.command.CommandBase;
+        // Import Follower and FollowerMovement classes from Apex
+
+        public class FollowPathCommand extends CommandBase {
+            private final Follower follower;
+            private final FollowerMovement movement;
+
+            public FollowPathCommand(Follower follower, FollowerMovement movement) {
+                this.follower = follower;
+                this.movement = movement;
+            }
+
+            @Override
+            public void initialize() { follower.follow(movement); }
+
+            @Override
+            public void execute() { follower.update(); }
+
+            @Override
+            public boolean isFinished() { return !follower.isBusy(); }
+
+            @Override
+            public void end(boolean interrupted) {
+                if (interrupted) follower.stop();
+            }
+        }
+        ```
+
+        This command can then be used like any other command, for example in a `SequentialCommandGroup`:
+
+        ```java
+        schedule(new SequentialCommandGroup(
+            new FollowPathCommand(follower, path1),
+            new FollowPathCommand(follower, path2),
+            new InstantCommand(() -> {
+                follower.stop();
+                telemetry.addLine("Auto Complete!");
+                telemetry.update();
+            })
+        ));
+        ```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        We recommend using this command method to integrate Apex into Ivy's command system.
+        It is a simple command that takes in a `Follower` and a `FollowerMovement`.
+
+        ```java
+        public static Command follow(Follower follower, FollowerMovement movement) {
+            return Command.build()
+                .setStart(() -> follower.follow(movement))
+                .setExecute(() -> follower.update())
+                .setDone(() -> !follower.isBusy())
+                .setEnd(endCondition -> follower.stop());
+        }
+        ```
+
+        This command can then be used like any other command, for example in a `sequential`:
+
+        ```java
+        Scheduler.schedule(sequential(
+            follow(follower, path1),
+            follow(follower, path2),
+            instant(() -> {
+                follower.stop();
+                telemetry.addLine("Auto Complete!");
+                telemetry.update();
+            })
+        ));
+        ```
+    </Tabs.Tab>
+</Tabs>

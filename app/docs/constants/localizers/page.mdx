@@ -1,65 +1,58 @@
 import { Tabs, Steps } from 'nextra/components'
 
-# Localizer Configs
-___
+# Localizer Constants
+---
+Choose your localizer type below and follow the steps to configure it.
 
-<Tabs items={['goBilda Pinpoint', 'SparkFun OTOS', 'Three Wheel Odometry', 'Two Wheel Odometry', 'Drive Encoder']}>
+<Tabs items={['goBILDA Pinpoint', 'SparkFun OTOS', 'Three Pod', 'Two Pod', "Octoquad", 'Drive Encoders']}>
   <Tabs.Tab>
-    Pinpoint constants configure the hardware name, physical pod offsets, wheel directions, and encoder ticks.
     <Steps>
-    ### Step 1 -- Name
-    Call `.setName()` in order to set the name of the Pinpoint device on your control hub.
+    ### Replace `localizerConfig()`
+    ```java
+    @Override
+    public BaseLocalizerConfig<?> localizerConfig() {
+        return new Pinpoint.Config()
+                .setName("pinpoint")
+                .setEncoderResolution(Pinpoint.GoBildaPods.goBILDA_4_BAR_POD)
+                .setEncoderDirections(Pinpoint.EncoderDirection.FORWARD, Pinpoint.EncoderDirection.FORWARD)
+                .setOffsets(0, 0, DistUnit.IN);
+    }
+    ```
+    ### Name
+    Replace `"pinpoint"` with the name of your Pinpoint computer in the hardware configuration. 
 
-    ### Step 2 -- Offsets
-    Call `.setOffsets()` in order to set the offsets of the PInpoint dead wheels. Do so according to the diagram below. 
+    ### Resolution
+    If you are using goBILDA odometry pods, you can use the predefined resolutions `Pinpoint.GoBildaPods.goBILDA_4_BAR_POD`
+    or `Pinpoint.GoBildaPods.goBILDA_SWINGARM_POD`. If you are using a custom odometry pod, the input should be a [Dist](../classes/dist/)
 
-    ### Step 3 -- Direction
-    Call `.setEncoderDirections()` in order to flip the directions of the dead wheels. Run the `TeleOP Test` to make sure that moving the bot forward increases the `y` of your position and moving the bot to the right increases the `x` of your position.
-
-    ### Step 4 -- Resolution
-    Set the type of odometry you are using. For 4-Bar-Pods, it'll be `Pinpoint.GoBildaPods.goBILDA_4_BAR_POD` and for Swing-Arm `Pinpoint.GoBildaPods.goBILDA_SWINGARM_POD`. If you're using a custom odometry solution, input a double in ticks per mm representing the resolution of the odometry pods. 
+    ### Directions and offsets
+    Download and run the `OdometryTuner` OpMode from the [OpModes](../opmodes/) page. This will allow you to determine the 
+    correct encoder directions and offsets for your robot. You can manually tune these values if you'd like.
     </Steps>
-    Example configuration is below
-        ```java
-        @Override
-        public BaseLocalizerConfig<Pinpoint.Config> setLocalizerConstants() {
-            return new Pinpoint.Config()
-                    .setName("pinpoint")
-                    .setOffsets(0, 0, DistUnit.IN)
-                    .setEncoderDirections(Pinpoint.EncoderDirection.FORWARD, Pinpoint.EncoderDirection.REVERSE)
-                    .setEncoderResolution(Pinpoint.GoBildaPods.goBILDA_4_BAR_POD);
-        }
-        ```
-        
   </Tabs.Tab>
   <Tabs.Tab>
-  Pinpoint constants configure the hardware name, physical pod offsets, wheel directions, and encoder ticks.
-      <Steps>
-      ### Step 1 -- Name
-      Call `.setName()` in order to set the name of the Pinpoint device on your control hub.
-  
-      ### Step 2 -- Offsets
-      Call `.setOffsets()` in order to set the offsets of the PInpoint dead wheels. Do so according to the diagram below. 
-  
-      ### Step 3 -- Direction
-      Call `.setEncoderDirections()` in order to flip the directions of the dead wheels. Run the `TeleOP Test` to make sure that moving the bot forward increases the `y` of your position and moving the bot to the right increases the `x` of your position.
-  
-      ### Step 4 -- Resolution
-      Set the type of odometry you are using. For 4-Bar-Pods, it'll be `Pinpoint.GoBildaPods.goBILDA_4_BAR_POD` and for Swing-Arm `Pinpoint.GoBildaPods.goBILDA_SWINGARM_POD`. If you're using a custom odometry solution, input a double in ticks per mm representing the resolution of the odometry pods. 
-      </Steps>
-      Example configuration is below
-          ```java
-          @Override
-          public BaseLocalizerConfig<Pinpoint.Config> setLocalizerConstants() {
-              return new Pinpoint.Config()
-                      .setName("pinpoint")
-                      .setOffsets(0, 0, DistUnit.IN)
-                      .setEncoderDirections(Pinpoint.EncoderDirection.FORWARD, Pinpoint.EncoderDirection.REVERSE)
-                      .setEncoderResolution(Pinpoint.GoBildaPods.goBILDA_4_BAR_POD);
-          }
-          ```
+    <Steps>
+    ### Replace `localizerConfig()`
+    ```java
+    @Override
+    public BaseLocalizerConfig<?> localizerConfig() {
+        return new OTOS.Config()
+                .setName("otos")
+                .setOffset(new Pose(Vector.of(0, 0, DistUnit.IN), Angle.fromDeg(0)))
+                .setLinearScalar(0)
+                .setAngularScalar(0);
+    }
+    ```
+    ### Name
+    Replace `"otos"` with the name of your OTOS sensor in the hardware configuration. 
+
+    ### Scalars and offsets
+    Download and run the `OdometryTuner` OpMode from the [OpModes](../opmodes/) page. This will allow you to determine the 
+    correct scalars and offsets for your robot. You can manually tune these values if you'd like.
+    </Steps>
   </Tabs.Tab>
   <Tabs.Tab>**Three Wheel Odometry Localizer**</Tabs.Tab>
   <Tabs.Tab>**Two Wheel Odometry Localizer**</Tabs.Tab>
+  <Tabs.Tab>**Octoquad Localizer**</Tabs.Tab>
   <Tabs.Tab>**Drive Encoder Localizer**</Tabs.Tab>
 </Tabs>

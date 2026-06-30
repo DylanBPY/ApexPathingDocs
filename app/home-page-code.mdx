@@ -1,6 +1,5 @@
 ```java
-Path examplePath = new PathBuilder()
-        .addControlPoints(
+Path examplePath = new builder.path(
                 lastPath.getEndPose(),
                 pose.of(120, 20),
                 pose.arcPoseOf(120, 0, 10),
@@ -10,11 +9,12 @@ Path examplePath = new PathBuilder()
         .addDistanceCallback(0.8, this::dropElement)
         .build();
 
-Turn callbackTurn = new TurnBuilder(examplePath.getEndPose())
+Turn callbackTurn = new builder.turn(examplePath.getEndPose())
         .turnTo(Angle.fromDeg(0))
         .addAngularCallback(Angle.fromDeg(315), this::deployOuttake)
-        .build();
+        .quickBuild();
 
-Follower follower = constants.build();
+Follower follower = new Follower(Constants(), hardwareMap)
 follower.follow(examplePath);
+follower.follow(callbackTurn);
 ```
