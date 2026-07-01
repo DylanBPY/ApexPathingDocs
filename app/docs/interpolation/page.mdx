@@ -17,13 +17,18 @@ so you can customize your robot's movement to your liking.
 
 
 ### Defining a paths interpolation style
-There are 2 different heading interpolation style classes depeneding on the type of drivetrain you have.
-If your paths use the `HolonomicPathBuilder`, you should use the `HolonomicInterpolationStyle` class. 
-If your paths use the `TankPathBuilder`, you should use the `TankInterpolationStyle` class.
+There are 2 different heading interpolation style enums depeneding on the type of drivetrain you have.
+If your paths use the `HolonomicPathBuilder`, you should use the `HolonomicInterpolationStyle` enum. 
+If your paths use the `TankPathBuilder`, you should use the `TankInterpolationStyle` enum.
 
 Both of the path builders have an `interpolateWith()` method that takes in an instance of the appropriate 
-interpolation style class. The following list has examples of how to use each type.
+interpolation style enum. The following list has examples of how to use each type.
 
+<Callout type="info">
+    The `pose` object used in the examples below is an instance of the 
+    [Pose Builder](/docs/classes/posebuilder/) class. An equivalent pose builder using inches and degrees 
+    would look like `PoseFactory pose = new PoseFactory(DistUnit.IN, AngleUnit.DEG);`.
+</Callout>
 
 ## Tangent Forward
 Tangent forward interpolation always faces the robot in the forward direction of the path
@@ -31,10 +36,24 @@ Tangent forward interpolation always faces the robot in the forward direction of
 
 <img src={img_base + "TANGENT_FORWARD.png"} alt="Tangent Forward Interpolation Visual" className={img_class} />
 
-This style is supported by both the `HolonomicPathBuilder` and `TankPathBuilder` classes. Here is how you can use it:
-```java
-.interpolateWith(HolonomicInterpolationStyle.TANGENT_FORWARD) // For HolonomicPathBuilder
-.interpolateWith(TankInterpolationStyle.TANGENT_FORWARD) // For TankPathBuilder
+<Callout type="info">
+    Tangent forward interpolation is the default for `TankPathBuilder`. 
+    If you do not call the `interpolateWith()` method, this style will be used.
+</Callout>
+
+This style is supported by both the `HolonomicPathBuilder` and `TankPathBuilder` classes.
+Here is an example using the path shown in the image above.
+```java {8-9}
+path = builder.path( // No pose headings are needed for tangent interpolation styles
+            pose.of(-45, 0),
+            pose.of(-30, -20),
+            pose.of(10, -20),
+            pose.of(20, 20),
+            pose.of(45, 0)
+    )
+    .interpolateWith(HolonomicInterpolationStyle.TANGENT_FORWARD)
+    //.interpolateWith(TankInterpolationStyle.TANGENT_FORWARD) // For TankPathBuilder
+    .profiledBuild();
 ```
 
 
@@ -44,10 +63,19 @@ Tangent backward interpolation always faces the robot in the backward direction 
 
 <img src={img_base + "TANGENT_BACKWARD.png"} alt="Tangent Backward Interpolation Visual" className={img_class} />
 
-This style is supported by both the `HolonomicPathBuilder` and `TankPathBuilder` classes. Here is how you can use it:
-```java
-.interpolateWith(HolonomicInterpolationStyle.TANGENT_BACKWARD) // For HolonomicPathBuilder
-.interpolateWith(TankInterpolationStyle.TANGENT_BACKWARD) // For TankPathBuilder
+This style is supported by both the `HolonomicPathBuilder` and `TankPathBuilder` classes.
+Here is an example using the path shown in the image above.
+```java {8-9}
+path = builder.path( // No pose headings are needed for tangent interpolation styles
+            pose.of(-45, 0),
+            pose.of(-30, -20),
+            pose.of(10, -20),
+            pose.of(20, 20),
+            pose.of(45, 0)
+    )
+    .interpolateWith(HolonomicInterpolationStyle.TANGENT_BACKWARD)
+    //.interpolateWith(TankInterpolationStyle.TANGENT_BACKWARD) // For TankPathBuilder
+    .profiledBuild();
 ```
 
 
@@ -63,15 +91,19 @@ The opposite is true as well, if the robot is facing closer to the tangent backw
 it will use tangent backward interpolation.
 <img src={img_base + "TANGENT_OPTIMAL_2.png"} alt="Tangent Optimal Backward Interpolation Visual" className={img_class} />
 
-<Callout type="info">
-    Smooth start to end interpolation is the default style for the `TankPathBuilder`. 
-    If you do not call the `interpolateWith()` method, this style will be used.
-</Callout>
-
-This style is supported by both the `HolonomicPathBuilder` and `TankPathBuilder` classes. Here is how you can use it:
-```java
-.interpolateWith(HolonomicInterpolationStyle.TANGENT_OPTIMAL) // For HolonomicPathBuilder
-.interpolateWith(TankInterpolationStyle.TANGENT_OPTIMAL) // For TankPathBuilder
+This style is supported by both the `HolonomicPathBuilder` and `TankPathBuilder` classes.
+Here is an example using the path shown in the image above.
+```java {8-9}
+path = builder.path( // No pose headings are needed for tangent interpolation styles
+            pose.of(-45, 0),
+            pose.of(-30, -20),
+            pose.of(10, -20),
+            pose.of(20, 20),
+            pose.of(45, 0)
+    )
+    .interpolateWith(HolonomicInterpolationStyle.TANGENT_OPTIMAL)
+    //.interpolateWith(TankInterpolationStyle.TANGENT_OPTIMAL) // For TankPathBuilder
+    .profiledBuild();
 ```
 
 
@@ -91,9 +123,18 @@ angle offset of 45 degrees.
 
 <img src={img_base + "TANGENT_CUSTOM.png"} alt="Tangent Custom Interpolation Visual" className={img_class} />
 
-This style is only supported by the `HolonomicPathBuilder` class. Here is how you can use it:
-```java
-.interpolateWith(HolonomicInterpolationStyle.TANGENT_CUSTOM, Angle.fromDeg(45))
+This style is only supported by the `HolonomicPathBuilder` class.
+Here is an example using the path shown in the image above.
+```java {8}
+path = builder.path( // No pose headings are needed for tangent interpolation styles
+            pose.of(-45, 0),
+            pose.of(-30, -20),
+            pose.of(10, -20),
+            pose.of(20, 20),
+            pose.of(45, 0)
+    )
+    .interpolateWith(HolonomicInterpolationStyle.TANGENT_OPTIMAL, Angle.fromDeg(45)) // 45 degree offset
+    .profiledBuild();
 ```
 You can learn more about the `Angle` class on the [Angle](/docs/classes/angle/) page.
 
@@ -103,36 +144,64 @@ Smooth start to end interpolation will graually rotate the robot from the start 
 heading of the path. The rotation speed is based on the path's length.
 
 <Callout type="info">
-    Smooth start to end interpolation is the default style for the `HolonomicPathBuilder`. 
+    Smooth start to end interpolation is the default for `HolonomicPathBuilder`. 
     If you do not call the `interpolateWith()` method, this style will be used.
 </Callout>
 
 <img src={img_base + "SMOOTH_START_TO_END.png"} alt="Smooth Start to End Interpolation Visual" className={img_class} />
 
-This style is only supported by the `HolonomicPathBuilder` class. Here is how you can use it:
-```java
-.interpolateWith(HolonomicInterpolationStyle.SMOOTH_START_TO_END)
+This style is only supported by the `HolonomicPathBuilder` class.
+Here is an example using the path shown in the image above.
+```java {8}
+path = builder.path(
+            pose.of(-45, 0, 0), // Start heading is 0 degrees
+            pose.of(-30, -20),
+            pose.of(10, -20),
+            pose.of(20, 20),
+            pose.of(45, 0, 135) // End heading is 135 degrees
+    )
+    .interpolateWith(HolonomicInterpolationStyle.SMOOTH_START_TO_END)
+    .profiledBuild();
 ```
-
 
 ## Constant Start Heading
 Constant start heading interpolation will maintain the start pose's heading throughout the entire path.
 
 <img src={img_base + "CONSTANT_START_HEADING.png"} alt="Constant Start Heading Interpolation Visual" className={img_class} />
 
-This style is only supported by the `HolonomicPathBuilder` class. Here is how you can use it:
-```java
-.interpolateWith(HolonomicInterpolationStyle.CONSTANT_START_HEADING)
+This style is only supported by the `HolonomicPathBuilder` class.
+Here is an example using the path shown in the image above.
+```java {8}
+path = builder.path(
+            pose.of(-45, 0, 0), // Start heading is 0 degrees
+            pose.of(-30, -20),
+            pose.of(10, -20),
+            pose.of(20, 20),
+            pose.of(45, 0) // End heading isn't needed for constant start heading interpolation
+    )
+    .interpolateWith(HolonomicInterpolationStyle.CONSTANT_START_HEADING)
+    .profiledBuild();
 ```
+
+
 
 ## Constant End Heading
 Constant end heading interpolation will maintain the end pose's heading throughout the entire path.
 
 <img src={img_base + "CONSTANT_END_HEADING.png"} alt="Constant End Heading Interpolation Visual" className={img_class} />
 
-This style is only supported by the `HolonomicPathBuilder` class. Here is how you can use it:
-```java
-.interpolateWith(HolonomicInterpolationStyle.CONSTANT_END_HEADING)
+This style is only supported by the `HolonomicPathBuilder` class.
+Here is an example using the path shown in the image above.
+```java {8}
+path = builder.path(
+            pose.of(-45, 0), // Start heading isn't needed for constant end heading interpolation
+            pose.of(-30, -20),
+            pose.of(10, -20),
+            pose.of(20, 20),
+            pose.of(45, 0, 45) // End heading is 45 degrees
+    )
+    .interpolateWith(HolonomicInterpolationStyle.CONSTANT_END_HEADING)
+    .profiledBuild();
 ```
 
 
@@ -141,14 +210,42 @@ Node based interpolation allows you to define what heading the robot should be f
 Between these nodes, the robot will use smooth start to end interpolation to rotate between the headings.
 The example below has 3 nodes, each has an [s value](/docs/s-value/) that defines where on the path the 
 node is located and an [Angle](/docs/classes/angle/) that defines what heading the robot should be facing at that point.
+The robot will 
 
 <img src={img_base + "NODE_BASED.png"} alt="Node Based Interpolation Visual" className={img_class} />
 
-This style is only supported by the `HolonomicPathBuilder` class. Here is how you can use it
-(example nodes are taken from the image above):
-```java
-.interpolateWith(HolonomicInterpolationStyle.NODE_BASED)
-.addHeadingNode(0.0, Angle.fromDeg(90)) // Node 1
-.addHeadingNode(0.5, Angle.fromDeg(270)) // Node 2
-.addHeadingNode(1.0, Angle.fromDeg(495)) // Node 3
+This style is only supported by the `HolonomicPathBuilder` class.
+Here is an example using the path shown in the image above.
+```java {8-11}
+path = builder.path(
+            pose.of(-45, 0, 90), // Start heading is 90 degrees
+            pose.of(-30, -20),
+            pose.of(10, -20),
+            pose.of(20, 20),
+            pose.of(45, 0, 180) // End heading is 180 degrees
+    )
+    .interpolateWith(HolonomicInterpolationStyle.NODE_BASED)
+    .addHeadingNode(0.5, Angle.fromDeg(270)) // Node 1
+    .addHeadingNode(0.8, Angle.fromDeg(45)) // Node 2
+    // You can add as many nodes as you want
+    .profiledBuild();
+```
+
+## Facing Pose
+Facing pose interpolation will always face the robot towards a specific pose. 
+
+<img src={img_base + "FACING_POSE.png"} alt="Facing Pose Interpolation Visual" className={img_class} />
+
+This style is only supported by the `HolonomicPathBuilder` class.
+Here is an example using the path shown in the image above.
+```java {8}
+path = builder.path( // Start and end headings aren't needed for facing pose interpolation
+            pose.of(-45, 0),
+            pose.of(-30, -20),
+            pose.of(10, -20),
+            pose.of(20, 20),
+            pose.of(45, 0)
+    )
+    .interpolateWith(HolonomicInterpolationStyle.FACING_POSE, pose.of(-10, 10))
+    .profiledBuild();
 ```
